@@ -1,11 +1,8 @@
 import Link from 'next/link';
 
-const Sell = () => (
+ const Sell = () => (
     <div>
         <p>Sell!</p>
-        <Link href='/'>
-            <a>Home!</a>
-        </Link>
     </div>
 )
 
