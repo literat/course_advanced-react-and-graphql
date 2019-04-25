@@ -123,7 +123,7 @@ const Mutations = {
     }
     // 2. Check if its a legit reset token
     // 3. Check if its expired
-    const [user] = context.db.query.users({
+    const [user] = await context.db.query.users({
       where: {
         resetToken: args.resetToken,
         resetTokenExpiry_gte: Date.now - 3600000,
@@ -154,7 +154,6 @@ const Mutations = {
     });
     // 8. return new user
     return updatedUser;
-    // 9. HHEWHEWHWEW have a beer
   },
 };
 
