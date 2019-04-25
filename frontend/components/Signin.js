@@ -39,7 +39,6 @@ class Singin extends Component {
               onSubmit={async event => {
                 event.preventDefault();
                 const response = await signin();
-                console.log(response);
                 this.setState({ name: '', email: '', password: '' });
               }}
             >
