@@ -8,23 +8,25 @@ enum Permission {
 }
 
 type User {
-  id: ID! @unique
+  id: ID! @unique @id
   name: String!
   email: String! @unique
   password: String!
   resetToken: String
   resetTokenExpiry: Float
-  permissions: [Permission]
+  permissions: [Permission] @scalarList(strategy: RELATION)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Item {
-  id: ID! @unique
+  id: ID! @unique @id
   title: String!
   description: String!
   image: String
   largeImage: String
   price: Int!
-  # createdAt: DateTime!
-  # updatedAt: DateTime!
-  # user: User!
+  user: User!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
