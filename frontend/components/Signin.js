@@ -15,7 +15,7 @@ const SIGNIN_MUTATION = gql`
   }
 `;
 
-class Singin extends Component {
+class Signin extends Component {
   state = {
     name: '',
     email: '',
@@ -75,4 +75,4 @@ class Singin extends Component {
   }
 }
 
-export default Singin;
+export default Signin;
