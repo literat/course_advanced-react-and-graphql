@@ -267,6 +267,26 @@ const Mutations = {
       info,
     );
   },
+  async removeFromCart(parent, args, context, info) {
+    // 1. Find the cart item
+    const cartItem = await context.db.query.cartItem(
+      { where: { id: args.id } },
+      `{ id, user { id } }`,
+    );
+    // 1.5 Make sure we found the item
+    if (!cartItem) throw new Error('No Cart Item Found! ');
+    // 2 Make sure they own the cart item
+    if (cartItem.user.id !== context.request.userId) {
+      throw new Error('Cheatin huhhhh');
+    }
+    // 3. Delete the cart item
+    return context.db.mutation.deleteCartItem(
+      {
+        where: { id: args.id },
+      },
+      info,
+    );
+  },
 };
 
 module.exports = Mutations;
