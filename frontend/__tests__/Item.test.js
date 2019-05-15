@@ -1,5 +1,6 @@
 import ItemComponent from '../components/Item';
 import { shallow } from 'enzyme';
+import toJSON from 'enzyme-to-json';
 
 const fakeItem = {
   id: 'ABC123',
@@ -11,7 +12,11 @@ const fakeItem = {
 };
 
 describe('<Item />', () => {
-  it('renders the image properly', () => {
+  it('renders and matches the snapshot', () => {
+    const wrapper = shallow(<ItemComponent item={fakeItem} />);
+    expect(toJSON(wrapper)).toMatchSnapshot();
+  });
+  /* it('renders the image properly', () => {
     const wrapper = shallow(<ItemComponent item={fakeItem} />);
     const img = wrapper.find('img');
 
@@ -34,5 +39,5 @@ describe('<Item />', () => {
     expect(buttonsList.find('Link')).toHaveLength(1);
     expect(buttonsList.find('AddToCart').exists()).toBe(true);
     expect(buttonsList.find('DeleteItem').exists()).toBe(true);
-  });
+  }); */
 });
