@@ -42,7 +42,6 @@ class CreateItem extends Component {
   };
 
   uploadFile = async event => {
-    console.log('Uploading file... ');
     const files = event.target.files;
     const data = new FormData();
     data.append('file', files[0]);
@@ -53,7 +52,6 @@ class CreateItem extends Component {
       { method: 'POST', body: data },
     );
     const file = await response.json();
-    console.log(file);
     this.setState({
       image: file.secure_url,
       largeImage: file.eager[0].secure_url,
@@ -65,6 +63,7 @@ class CreateItem extends Component {
       <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
         {(createItem, { loading, error }) => (
           <Form
+            data-test="form"
             onSubmit={async event => {
               // Stop the form from submitting
               event.preventDefault();
