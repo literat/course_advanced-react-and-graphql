@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/litera-tomas-f5952f/advanced-react-sick-fits/dev
-# timestamp: Fri Jun 21 2019 15:07:50 GMT+0200 (Central European Summer Time)
+# source: https://sick-fits-prod-50a14042cb.herokuapp.com/sick-fits-prod/prod
+# timestamp: Thu Jun 27 2019 15:11:46 GMT+0200 (Central European Summer Time)
 
 type AggregateCartItem {
   count: Int!
@@ -834,8 +834,6 @@ input OrderCreateInput {
   id: ID
   total: Int!
   charge: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   items: OrderItemCreateManyInput
   user: UserCreateOneInput!
 }
@@ -1605,8 +1603,6 @@ input OrderSubscriptionWhereInput {
 input OrderUpdateInput {
   total: Int
   charge: String
-  createdAt: DateTime
-  updatedAt: DateTime
   items: OrderItemUpdateManyInput
   user: UserUpdateOneRequiredInput
 }
@@ -1614,8 +1610,6 @@ input OrderUpdateInput {
 input OrderUpdateManyMutationInput {
   total: Int
   charge: String
-  createdAt: DateTime
-  updatedAt: DateTime
 }
 
 input OrderWhereInput {
