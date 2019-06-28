@@ -1,7 +1,7 @@
 {
   "version": 1,
   "env": {
-    "FRONTEND_URL": "http://localhost:7777",
+    "FRONTEND_URL": "https://sick-fits-frontend-epxerevozq.now.sh/",
     "PRISMA_ENDPOINT": "https://sick-fits-prod-50a14042cb.herokuapp.com/sick-fits-prod/prod",
     "PRISMA_SECRET": "<prisma_secret>",
     "APP_SECRET": "<app_secret>",
