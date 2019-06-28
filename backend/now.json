@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "env": {
+    "FRONTEND_URL": "http://localhost:7777",
+    "PRISMA_ENDPOINT": "https://sick-fits-prod-50a14042cb.herokuapp.com/sick-fits-prod/prod",
+    "PRISMA_SECRET": "<prisma_secret>",
+    "APP_SECRET": "<app_secret>",
+    "STRIPE_SECRET": "<stripe_secret>",
+    "PORT": "4444",
+    "MAIL_HOST": "smtp.mailtrap.io",
+    "MAIL_PORT": "2525",
+    "MAIL_USER": "<mailtrap_user>",
+    "MAIL_PASSWORD": "<mailtrap_password>"
+  }
+}
