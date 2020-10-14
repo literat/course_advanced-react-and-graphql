@@ -22,7 +22,7 @@ type Mutation {
     resetToken: String!
     password: String!
     confirmPassword: String!
-  ): User!
+  ): SuccesMessage!
   updatePermissions(permissions: [Permission], userId: ID!): User
   addToCart(id: ID!): CartItem
   removeFromCart(id: ID!): CartItem

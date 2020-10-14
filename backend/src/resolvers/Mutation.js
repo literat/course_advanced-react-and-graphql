@@ -185,8 +185,8 @@ const Mutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
-    // 8. return new user
-    return updatedUser;
+    // 8. return the message
+    return { message: 'Your password has been reset!' };
   },
   async updatePermissions(parent, args, context, info) {
     // 1. Check if they are logged in
