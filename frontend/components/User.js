@@ -1,6 +1,6 @@
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/client';
+import { useState, useEffect } from 'react';
 
 const CURRENT_USER_QUERY = gql`
   query {
@@ -27,15 +27,11 @@ const CURRENT_USER_QUERY = gql`
   }
 `;
 
-const User = props => (
-  <Query {...props} query={CURRENT_USER_QUERY}>
-    {payload => props.children(payload)}
-  </Query>
-);
+function useUser() {
+  const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
+  if (data) {
+    return data.authenticatedUser;
+  }
+}
 
-User.propTypes = {
-  children: PropTypes.func.isRequired,
-};
-
-export default User;
-export { CURRENT_USER_QUERY };
+export { CURRENT_USER_QUERY, useUser };
