@@ -30,7 +30,7 @@ const CURRENT_USER_QUERY = gql`
 function useUser() {
   const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
   if (data) {
-    return data.authenticatedUser;
+    return data.me;
   }
 }
 
