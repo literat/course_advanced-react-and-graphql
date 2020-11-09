@@ -5,8 +5,8 @@ export default function useForm(initial = {}) {
 
   // because apollo queries initially give us undefined (during loading state) and we can't early return from a component with hooks underneath, we use an effect to "watch" the initial state. When it finally does come in, we update it
   useEffect(() => {
-    setInputs(initial)
-  }, [initial])
+    setInputs(initial);
+  }, [initial]);
 
   function handleChange(e) {
     let { value, name, type } = e.target;

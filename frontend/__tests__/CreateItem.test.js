@@ -25,7 +25,7 @@ describe('<CreateItem />', () => {
     const wrapper = mount(
       <MockedProvider>
         <CreateItem />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     const form = wrapper.find('form[data-test="form"]');
@@ -37,7 +37,7 @@ describe('<CreateItem />', () => {
     const wrapper = mount(
       <MockedProvider>
         <CreateItem />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     const input = wrapper.find('input[type="file"]');
@@ -60,7 +60,7 @@ describe('<CreateItem />', () => {
     const wrapper = mount(
       <MockedProvider>
         <CreateItem />
-      </MockedProvider>,
+      </MockedProvider>
     );
     wrapper.find('#title').simulate('change', {
       target: {
@@ -117,7 +117,7 @@ describe('<CreateItem />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <CreateItem />
-      </MockedProvider>,
+      </MockedProvider>
     );
     // simulate someone filling out the form
     wrapper.find('#title').simulate('change', {

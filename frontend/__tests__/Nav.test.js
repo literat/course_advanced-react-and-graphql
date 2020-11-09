@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import toJSON from 'enzyme-to-json';
+import { MockedProvider } from 'react-apollo/test-utils';
 import Nav from '../components/Nav';
 import { CURRENT_USER_QUERY } from '../components/User';
-import { MockedProvider } from 'react-apollo/test-utils';
 import { fakeUser, fakeCartItem } from '../lib/testUtils';
 
 const notSignedInMocks = [
@@ -53,7 +53,7 @@ describe('<Nav />', () => {
     const wrapper = mount(
       <MockedProvider mocks={notSignedInMocks}>
         <Nav />
-      </MockedProvider>,
+      </MockedProvider>
     );
     await wait();
     wrapper.update();
@@ -65,7 +65,7 @@ describe('<Nav />', () => {
     const wrapper = mount(
       <MockedProvider mocks={signedInMocks}>
         <Nav />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     await wait();
@@ -80,7 +80,7 @@ describe('<Nav />', () => {
     const wrapper = mount(
       <MockedProvider mocks={signedInMocksWithCartItems}>
         <Nav />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     await wait();

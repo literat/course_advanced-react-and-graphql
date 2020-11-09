@@ -57,7 +57,7 @@ describe('<AddToCart />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <AddToCart id="abc123" />
-      </MockedProvider>,
+      </MockedProvider>
     );
     await wait();
     wrapper.update();
@@ -69,12 +69,12 @@ describe('<AddToCart />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <ApolloConsumer>
-          {client => {
+          {(client) => {
             apolloClient = client;
             return <AddToCart id="abc123" />;
           }}
         </ApolloConsumer>
-      </MockedProvider>,
+      </MockedProvider>
     );
     // await wait();
     // wrapper.update();
@@ -98,7 +98,7 @@ describe('<AddToCart />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <AddToCart id="abc123" />
-      </MockedProvider>,
+      </MockedProvider>
     );
     await wait();
     wrapper.update();

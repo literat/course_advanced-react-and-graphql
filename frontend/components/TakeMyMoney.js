@@ -27,7 +27,7 @@ function totalItems(cart) {
   return cart.reduce((tally, cartItem) => tally + cartItem.quantity, 0);
 }
 
-function TakeMyMoney () {
+function TakeMyMoney() {
   onToken = async (response, createOrder) => {
     NProgress.start();
     // manually call the mutation once we have the stripe token
@@ -35,7 +35,7 @@ function TakeMyMoney () {
       variables: {
         token: response.id,
       },
-    }).catch(error => {
+    }).catch((error) => {
       alert(error.message);
     });
     Router.push({
@@ -51,18 +51,16 @@ function TakeMyMoney () {
       mutation={CREATE_ORDER_MUTATION}
       refetchQueries={[{ query: CURRENT_USER_QUERY }]}
     >
-      {createOrder => (
+      {(createOrder) => (
         <StripeCheckout
           amount={calcTotalPrice(me.cart)}
           name="Sick Fits"
           description={`Order of ${totalItems(me.cart)} items!`}
-          image={
-            me.cart.length && me.cart[0].item && me.cart[0].item.image
-          }
+          image={me.cart.length && me.cart[0].item && me.cart[0].item.image}
           stripeKey="pk_test_U14ioBw6xxpeuipRvQlXBrTM00WMliJkBf"
           currency="USD"
           email={me.email}
-          token={response => this.onToken(response, createOrder)}
+          token={(response) => this.onToken(response, createOrder)}
         >
           {this.props.children}
         </StripeCheckout>

@@ -3,7 +3,7 @@ function Person(name, foods) {
   this.foods = foods;
 }
 
-Person.prototype.fetchFavFoods = function() {
+Person.prototype.fetchFavFoods = function () {
   return new Promise((resolve, reject) => {
     // Simulate an API
     setTimeout(() => resolve(this.foods), 2000);

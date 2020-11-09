@@ -4,16 +4,18 @@ const LocalStateContext = createContext();
 
 const LocalStateProvider = LocalStateContext.Provider;
 
-function CartStateProvider({children}) {
+function CartStateProvider({ children }) {
   const [cartOpen, setCartOpen] = useState(false);
 
   function toggleCart() {
     setCartOpen(!cartOpen);
-  };
+  }
 
-  return <LocalStateProvider value={{cartOpen, setCartOpen, toggleCart}}>
-    {children}
-  </LocalStateProvider>
+  return (
+    <LocalStateProvider value={{ cartOpen, setCartOpen, toggleCart }}>
+      {children}
+    </LocalStateProvider>
+  );
 }
 
 function useCart() {

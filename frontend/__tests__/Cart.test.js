@@ -28,7 +28,7 @@ describe('<Cart />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <Cart />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     await wait();

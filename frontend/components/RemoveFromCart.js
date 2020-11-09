@@ -18,7 +18,7 @@ const BigButton = styled.button`
   background: none;
   border: 0;
   &:hover {
-    color: ${props => props.theme.red};
+    color: ${(props) => props.theme.red};
     cursor: pointer;
   }
 `;
@@ -27,16 +27,20 @@ class RemoveFormCart extends React.Component {
   static propsTypes = {
     id: PropTypes.string.isRequired,
   };
+
   // This gets called as soon as we get a response back from the server after the mutation has been performed
   update = (cache, payload) => {
     // 1. read the cache
     const data = cache.readQuery({ query: CURRENT_USER_QUERY });
     // 2. remove the item from the cart
     const cartItemId = payload.data.removeFromCart.id;
-    data.me.cart = data.me.cart.filter(cartItem => cartItem.id !== cartItemId);
+    data.me.cart = data.me.cart.filter(
+      (cartItem) => cartItem.id !== cartItemId
+    );
     // 3. write it back to the cache
     cache.writeQuery({ query: CURRENT_USER_QUERY, data });
   };
+
   render() {
     return (
       <Mutation
@@ -55,7 +59,7 @@ class RemoveFormCart extends React.Component {
           <BigButton
             disabled={loading}
             onClick={() => {
-              removeFromCart().catch(error => alert(error.message));
+              removeFromCart().catch((error) => alert(error.message));
             }}
             title="Delete Item"
           >

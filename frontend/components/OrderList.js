@@ -44,7 +44,7 @@ class OrderList extends Component {
             <div>
               <h2>You have {orders.length} orders</h2>
               <orderUl>
-                {orders.map(order => (
+                {orders.map((order) => (
                   <OrderItemStyles key={order.id}>
                     <Link
                       href={{
@@ -63,7 +63,7 @@ class OrderList extends Component {
                           <p>{formatMoney(order.total)}</p>
                         </div>
                         <div className="images">
-                          {order.items.map(item => (
+                          {order.items.map((item) => (
                             <img
                               key={item.id}
                               src={item.image}

@@ -28,7 +28,7 @@ describe('<RequestReset />', () => {
     const wrapper = mount(
       <MockedProvider>
         <RequestReset />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     const form = wrapper.find('form[data-test="form"]');
@@ -39,7 +39,7 @@ describe('<RequestReset />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <RequestReset />
-      </MockedProvider>,
+      </MockedProvider>
     );
     // simulate typing an email
     wrapper.find('input').simulate('change', {
@@ -54,7 +54,7 @@ describe('<RequestReset />', () => {
     wrapper.update();
 
     expect(wrapper.find('p').text()).toContain(
-      'Success! Check your email for a reset link!',
+      'Success! Check your email for a reset link!'
     );
   });
 });

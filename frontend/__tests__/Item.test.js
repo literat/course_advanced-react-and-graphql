@@ -1,6 +1,6 @@
-import ItemComponent from '../components/Item';
 import { shallow } from 'enzyme';
 import toJSON from 'enzyme-to-json';
+import ItemComponent from '../components/Item';
 
 const fakeItem = {
   id: 'ABC123',

@@ -34,13 +34,14 @@ class Order extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
   };
+
   render() {
     return (
       <Query query={SINGLE_ORDER_QUERY} variables={{ id: this.props.id }}>
         {({ data, error, loading }) => {
           if (error) return <Error error={error} />;
           if (loading) return <p>Loading...</p>;
-          const order = data.order;
+          const { order } = data;
           return (
             <OrderStyles data-test="order">
               <Head>
@@ -67,7 +68,7 @@ class Order extends Component {
                 <span>{order.items.length}</span>
               </p>
               <div className="items">
-                {order.items.map(item => (
+                {order.items.map((item) => (
                   <div className="order-item" key={item.id}>
                     <img src={item.image} alt={item.title} />
                     <div className="item-details">

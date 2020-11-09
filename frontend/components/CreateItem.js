@@ -35,21 +35,21 @@ class CreateItem extends Component {
     price: 0,
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     const { name, type, value } = event.target;
     const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
   };
 
-  uploadFile = async event => {
-    const files = event.target.files;
+  uploadFile = async (event) => {
+    const { files } = event.target;
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'sickfits');
 
     const response = await fetch(
       'https://api.cloudinary.com/v1_1/literat/image/upload',
-      { method: 'POST', body: data },
+      { method: 'POST', body: data }
     );
     const file = await response.json();
     this.setState({
@@ -64,7 +64,7 @@ class CreateItem extends Component {
         {(createItem, { loading, error }) => (
           <Form
             data-test="form"
-            onSubmit={async event => {
+            onSubmit={async (event) => {
               // Stop the form from submitting
               event.preventDefault();
               // call the mutation

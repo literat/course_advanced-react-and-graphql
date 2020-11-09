@@ -48,7 +48,7 @@ describe('<RemoveFromCart />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <RemoveFromCart id="abc123" />
-      </MockedProvider>,
+      </MockedProvider>
     );
     expect(toJSON(wrapper.find('button'))).toMatchSnapshot();
   });
@@ -58,12 +58,12 @@ describe('<RemoveFromCart />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <ApolloConsumer>
-          {client => {
+          {(client) => {
             apolloClient = client;
             return <RemoveFromCart id="abc123" />;
           }}
         </ApolloConsumer>
-      </MockedProvider>,
+      </MockedProvider>
     );
     const res = await apolloClient.query({ query: CURRENT_USER_QUERY });
     expect(res.data.me.cart).toHaveLength(1);

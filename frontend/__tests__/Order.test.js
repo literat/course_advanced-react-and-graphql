@@ -26,7 +26,7 @@ describe('<Order />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <Order id="ord123" />
-      </MockedProvider>,
+      </MockedProvider>
     );
     await wait();
     wrapper.update();

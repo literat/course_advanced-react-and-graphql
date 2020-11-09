@@ -1,7 +1,7 @@
 import { Query, Mutation } from 'react-apollo';
-import Error from './ErrorMessage';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
+import Error from './ErrorMessage';
 import Table from './styles/Table';
 import SickButton from './styles/SickButton';
 
@@ -36,7 +36,7 @@ const UPDATE_PERMISSIONS_MUTATION = gql`
   }
 `;
 
-const Permissions = props => (
+const Permissions = (props) => (
   <Query query={ALL_USERS_QUERY}>
     {({ data, loading, error }) => (
       <div>
@@ -48,14 +48,14 @@ const Permissions = props => (
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                {possiblePermissions.map(permission => (
+                {possiblePermissions.map((permission) => (
                   <th key={permission}>{permission}</th>
                 ))}
                 <th>👇</th>
               </tr>
             </thead>
             <tbody>
-              {data.users.map(user => (
+              {data.users.map((user) => (
                 <UserPermissions user={user} key={user.id} />
               ))}
             </tbody>
@@ -75,9 +75,11 @@ class UserPermissions extends React.Component {
       permissions: PropTypes.array,
     }).isRequired,
   };
+
   state = {
     permissions: this.props.user.permissions,
   };
+
   handlePermissionChange = (event, updatePermissions) => {
     const checkbox = event.target;
     // take a copy of the current permissions
@@ -88,11 +90,12 @@ class UserPermissions extends React.Component {
       updatedPermissions.push(checkbox.value);
     } else {
       updatedPermissions = updatedPermissions.filter(
-        permission => permission !== checkbox.value,
+        (permission) => permission !== checkbox.value
       );
     }
     this.setState({ permissions: updatedPermissions }, updatePermissions);
   };
+
   render() {
     const { user } = this.props;
 
@@ -116,7 +119,7 @@ class UserPermissions extends React.Component {
             <tr>
               <td>{user.name}</td>
               <td>{user.email}</td>
-              {possiblePermissions.map(permission => (
+              {possiblePermissions.map((permission) => (
                 <td key={permission}>
                   <label htmlFor={`${user.id}-permission-${permission}`}>
                     <input
@@ -124,7 +127,7 @@ class UserPermissions extends React.Component {
                       type="checkbox"
                       checked={this.state.permissions.includes(permission)}
                       value={permission}
-                      onChange={event =>
+                      onChange={(event) =>
                         this.handlePermissionChange(event, updatePermissions)
                       }
                     />

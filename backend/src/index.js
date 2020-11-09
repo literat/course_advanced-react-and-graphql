@@ -30,7 +30,7 @@ server.express.use(async (request, response, next) => {
         id: request.userId,
       },
     },
-    '{id, permissions, email, name}',
+    '{id, permissions, email, name}'
   );
 
   request.user = user;
@@ -44,7 +44,7 @@ server.start(
       origin: process.env.FRONTEND_URL,
     },
   },
-  deets => {
+  (deets) => {
     console.log(`Server is now running on http://localhost:${deets.port}`);
-  },
+  }
 );

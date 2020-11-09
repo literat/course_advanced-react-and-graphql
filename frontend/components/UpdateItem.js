@@ -37,28 +37,33 @@ const UPDATE_ITEM_MUTATION = gql`
   }
 `;
 
-function UpdateItem ({ id }) {
+function UpdateItem({ id }) {
   const { data = {}, loading } = useQuery(SINGLE_ITEM_QUERY, {
     variables: {
       id,
-    }
-  });
-  const { inputs, handleChange } = useForm(data.item);
-  const [updateItem, { loading: updating, error }] = useMutation(UPDATE_ITEM_MUTATION, {
-    variables: {
-      id,
-      ...inputs,
     },
   });
+  const { inputs, handleChange } = useForm(data.item);
+  const [updateItem, { loading: updating, error }] = useMutation(
+    UPDATE_ITEM_MUTATION,
+    {
+      variables: {
+        id,
+        ...inputs,
+      },
+    }
+  );
 
   if (loading) return <p>Loading...</p>;
   if (!data || !data.item) return <p>No Item Found for ID {id}</p>;
 
   return (
-    <Form onSubmit={async (event) => {
-      event.preventDefault();
-      const response = await updateItem();
-    }}>
+    <Form
+      onSubmit={async (event) => {
+        event.preventDefault();
+        const response = await updateItem();
+      }}
+    >
       <Error error={error} />
       <fieldset disabled={updating} aria-busy={updating}>
         <label htmlFor="title">
@@ -97,17 +102,15 @@ function UpdateItem ({ id }) {
             onChange={handleChange}
           />
         </label>
-        <button type="submit">
-          Sav{loading ? 'ing' : 'e'} Changes
-        </button>
+        <button type="submit">Sav{loading ? 'ing' : 'e'} Changes</button>
       </fieldset>
     </Form>
   );
-};
+}
 
 UpdateItem.propTypes = {
   id: PropTypes.string.isRequred,
-}
+};
 
 export default UpdateItem;
 export { UPDATE_ITEM_MUTATION };

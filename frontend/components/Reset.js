@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import useForm from '../lib/useForm';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
-import { CURRENT_USER_QUERY } from '../components/User';
+import { CURRENT_USER_QUERY } from './User';
 
 const RESET_MUTATION = gql`
   mutation RESET_MUTATION(
@@ -24,22 +24,28 @@ const RESET_MUTATION = gql`
 `;
 
 function Reset({ resetToken }) {
-  const { inputs, handleChange, resetForm } = useForm({ password: '', confirmPassword: '' });
-  const [ resetPassword, { error, loading, data }] = useMutation(RESET_MUTATION, {
-    variables: {
-      resetToken,
-      password: inputs.password,
-      confirmPassword: inputs.confirmPassword,
-    },
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  const { inputs, handleChange, resetForm } = useForm({
+    password: '',
+    confirmPassword: '',
   });
+  const [resetPassword, { error, loading, data }] = useMutation(
+    RESET_MUTATION,
+    {
+      variables: {
+        resetToken,
+        password: inputs.password,
+        confirmPassword: inputs.confirmPassword,
+      },
+      refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    }
+  );
 
   console.log(data);
 
   return (
     <Form
       method="post"
-      onSubmit={async event => {
+      onSubmit={async (event) => {
         event.preventDefault();
         await resetPassword();
         resetForm();

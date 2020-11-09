@@ -2,8 +2,8 @@ import { mount } from 'enzyme';
 import wait from 'waait';
 import toJSON from 'enzyme-to-json';
 import Router from 'next/router';
-import Pagination, { PAGINATION_QUERY } from '../components/Pagination';
 import { MockedProvider } from 'react-apollo/test-utils';
+import Pagination, { PAGINATION_QUERY } from '../components/Pagination';
 
 Router.router = {
   push() {},
@@ -36,18 +36,18 @@ describe('<Pagination />', () => {
     const wrapper = mount(
       <MockedProvider mocks={makeMocksFor(1)}>
         <Pagination page={1} />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     expect(wrapper.text()).toContain('Loading...');
-    //expect(toJSON(pagination)).toMatchSnapshot();
+    // expect(toJSON(pagination)).toMatchSnapshot();
   });
 
   it('renders pagination for 18 items', async () => {
     const wrapper = mount(
       <MockedProvider mocks={makeMocksFor(18)}>
         <Pagination page={1} />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     await wait();
@@ -62,7 +62,7 @@ describe('<Pagination />', () => {
     const wrapper = mount(
       <MockedProvider mocks={makeMocksFor(18)}>
         <Pagination page={1} />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     await wait();
@@ -76,7 +76,7 @@ describe('<Pagination />', () => {
     const wrapper = mount(
       <MockedProvider mocks={makeMocksFor(18)}>
         <Pagination page={5} />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     await wait();
@@ -89,7 +89,7 @@ describe('<Pagination />', () => {
     const wrapper = mount(
       <MockedProvider mocks={makeMocksFor(18)}>
         <Pagination page={3} />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     await wait();

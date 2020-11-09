@@ -9,18 +9,16 @@ import calcTotalPrice from '../lib/calcTotalPrice';
 import formatMoney from '../lib/formatMoney';
 import TakeMyMoney from './TakeMyMoney';
 
-function Cart () {
+function Cart() {
   const me = useUser();
   const { cartOpen, setCartOpen, toggleCart } = useCart();
 
-  if(!me) return null;
+  if (!me) return null;
 
   return (
     <CartStyles open={cartOpen}>
       <header>
-        <CloseButton title="close" onClick={
-          toggleCart
-        }>
+        <CloseButton title="close" onClick={toggleCart}>
           &times;
         </CloseButton>
         <Supreme>{me.name}'s Cart</Supreme>
@@ -30,7 +28,7 @@ function Cart () {
         </p>
       </header>
       <ul>
-        {me.cart.map(cartItem => (
+        {me.cart.map((cartItem) => (
           <CartItem key={cartItem.id} cartItem={cartItem} />
         ))}
       </ul>
@@ -44,6 +42,6 @@ function Cart () {
       </footer>
     </CartStyles>
   );
-};
+}
 
 export default Cart;

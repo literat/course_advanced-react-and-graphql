@@ -32,7 +32,7 @@ describe('<TakeMyMoney />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <TakeMyMoney />
-      </MockedProvider>,
+      </MockedProvider>
     );
     await wait();
     wrapper.update();
@@ -51,7 +51,7 @@ describe('<TakeMyMoney />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <TakeMyMoney />
-      </MockedProvider>,
+      </MockedProvider>
     );
 
     const component = wrapper.find('TakeMyMoney').instance();
@@ -68,7 +68,7 @@ describe('<TakeMyMoney />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <TakeMyMoney />
-      </MockedProvider>,
+      </MockedProvider>
     );
     await wait();
     wrapper.update();
@@ -91,7 +91,7 @@ describe('<TakeMyMoney />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <TakeMyMoney />
-      </MockedProvider>,
+      </MockedProvider>
     );
     await wait();
     wrapper.update();

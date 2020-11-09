@@ -1,0 +1,23 @@
+{
+  "name": "advanced-react-and-graphql",
+  "version": "1.0.0",
+  "description": "WesBos Course App",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/literat/advanced-react-and-graphql.git"
+  },
+  "author": "Tomas Litera <tomas@litera.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/literat/advanced-react-and-graphql/issues"
+  },
+  "homepage": "https://github.com/literat/advanced-react-and-graphql#readme",
+  "devDependencies": {
+    "eslint": "^7.13.0",
+    "eslint-config-wesbos": "^1.0.1"
+  }
+}

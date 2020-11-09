@@ -17,7 +17,7 @@ const Query = {
           id: context.request.userId,
         },
       },
-      info,
+      info
     );
   },
   async users(parent, args, context, info) {
@@ -41,12 +41,12 @@ const Query = {
       {
         where: { id: args.id },
       },
-      info,
+      info
     );
     // 3. Check if they have the permission to see this order
     const ownsOrder = order.user.id === context.request.userId;
     const hasPermissionToSeeOrder = context.request.user.permissions.includes(
-      'ADMIN',
+      'ADMIN'
     );
     if (!ownsOrder || !hasPermissionToSeeOrder) {
       throw new Error("You can't see this budddd");
@@ -67,7 +67,7 @@ const Query = {
           },
         },
       },
-      info,
+      info
     );
   },
 };

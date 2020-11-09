@@ -1,8 +1,8 @@
 import { mount } from 'enzyme';
 import toJSON from 'enzyme-to-json';
 import wait from 'waait';
-import SingleItem, { SINGLE_ITEM_QUERY } from '../components/SingleItem';
 import { MockedProvider } from 'react-apollo/test-utils';
+import SingleItem, { SINGLE_ITEM_QUERY } from '../components/SingleItem';
 import { fakeItem } from '../lib/testUtils';
 
 describe('<SingleItem />', () => {
@@ -27,7 +27,7 @@ describe('<SingleItem />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <SingleItem id="123" />
-      </MockedProvider>,
+      </MockedProvider>
     );
     expect(wrapper.text()).toContain('Loading...');
     await wait();
@@ -54,7 +54,7 @@ describe('<SingleItem />', () => {
     const wrapper = mount(
       <MockedProvider mocks={mocks}>
         <SingleItem id="123" />
-      </MockedProvider>,
+      </MockedProvider>
     );
     await wait();
     wrapper.update();

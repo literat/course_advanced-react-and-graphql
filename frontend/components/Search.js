@@ -3,8 +3,8 @@ import Downshift, { resetIdCounter } from 'downshift';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import debounce from 'lodash.debounce';
-import { DropDown, DropDownItem, SearchStyles } from './styles/DropDown';
 import Router from 'next/router';
+import { DropDown, DropDownItem, SearchStyles } from './styles/DropDown';
 
 const SEARCH_ITEMS_QUERY = gql`
   query SEARCH_ITEMS_QUERY($searchTerm: String!) {
@@ -37,6 +37,7 @@ class AutoComplete extends React.Component {
     items: [],
     loading: false,
   };
+
   onChange = debounce(async (event, client) => {
     console.log('Searching...');
     // turn loading on
@@ -53,13 +54,14 @@ class AutoComplete extends React.Component {
       loading: false,
     });
   }, 350);
+
   render() {
     resetIdCounter();
     return (
       <SearchStyles>
         <Downshift
           onChange={routeToItem}
-          itemToString={item => (item === null ? '' : item.title)}
+          itemToString={(item) => (item === null ? '' : item.title)}
         >
           {({
             getInputProps,
@@ -70,14 +72,14 @@ class AutoComplete extends React.Component {
           }) => (
             <div>
               <ApolloConsumer>
-                {client => (
+                {(client) => (
                   <input
                     {...getInputProps({
                       type: 'search',
                       placeholder: 'Search For An Item',
                       id: 'search',
                       className: this.state.loading ? 'loading' : '',
-                      onChange: event => {
+                      onChange: (event) => {
                         event.persist();
                         this.onChange(event, client);
                       },

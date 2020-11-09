@@ -24,7 +24,7 @@ const Mutations = {
           ...args,
         },
       },
-      info,
+      info
     );
 
     return item;
@@ -42,7 +42,7 @@ const Mutations = {
           id: args.id,
         },
       },
-      info,
+      info
     );
   },
   async deleteItem(parent, args, context, info) {
@@ -50,12 +50,12 @@ const Mutations = {
     // 1. find the item
     const item = await context.db.query.item(
       { where },
-      `{ id title user { id } }`,
+      `{ id title user { id } }`
     );
     // 2 . check if they own that item, or have the permissions
     const ownsItem = item.user.id === context.request.userId;
-    const hasPermissions = context.request.user.permissions.some(permission =>
-      ['ADMIN', 'ITEMDELETE'].includes(permission),
+    const hasPermissions = context.request.user.permissions.some((permission) =>
+      ['ADMIN', 'ITEMDELETE'].includes(permission)
     );
 
     if (!ownsItem && !hasPermissions) {
@@ -78,7 +78,7 @@ const Mutations = {
           permissions: { set: ['USER'] },
         },
       },
-      info,
+      info
     );
     // create JWT token for them
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
@@ -140,9 +140,7 @@ const Mutations = {
       to: user.email,
       subject: 'Your Password Reset Token',
       html: makeANiceEmail(
-        `Your Password Reset Token is here! \n\n <a href="${
-          process.env.FRONTEND_URL
-        }/reset?resetToken=${resetToken}">Click Here To Reset</a>`,
+        `Your Password Reset Token is here! \n\n <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Click Here To Reset</a>`
       ),
     });
 
@@ -200,7 +198,7 @@ const Mutations = {
           id: context.request.userId,
         },
       },
-      info,
+      info
     );
     // 3. Check if they have permissions to do this
     hasPermission(currentUser, ['ADMIN', 'PERMISSIONUPDATE']);
@@ -216,7 +214,7 @@ const Mutations = {
           id: args.userId,
         },
       },
-      info,
+      info
     );
   },
   async addToCart(parent, args, context, info) {
@@ -246,7 +244,7 @@ const Mutations = {
             quantity: existingCartItem.quantity + 1,
           },
         },
-        info,
+        info
       );
     }
     // 4. If it is not, create a fresh CartItem for that user!
@@ -265,14 +263,14 @@ const Mutations = {
           },
         },
       },
-      info,
+      info
     );
   },
   async removeFromCart(parent, args, context, info) {
     // 1. Find the cart item
     const cartItem = await context.db.query.cartItem(
       { where: { id: args.id } },
-      `{ id, user { id } }`,
+      `{ id, user { id } }`
     );
     // 1.5 Make sure we found the item
     if (!cartItem) throw new Error('No Cart Item Found! ');
@@ -285,7 +283,7 @@ const Mutations = {
       {
         where: { id: args.id },
       },
-      info,
+      info
     );
   },
   async createOrder(parent, args, context, info) {
@@ -313,12 +311,12 @@ const Mutations = {
             }
           }
         }
-      `,
+      `
     );
     // 2. Recalculate the total for the price
     const amount = user.cart.reduce(
       (tally, cartItem) => tally + cartItem.item.price * cartItem.quantity,
-      0,
+      0
     );
     console.log(`Going to charge for a total of ${amount}`);
     // 3. Create the Stripe charge (turn token into $$$)
@@ -328,7 +326,7 @@ const Mutations = {
       source: args.token,
     });
     // 4. Convert the CartItems to OrderItems
-    const orderItems = user.cart.map(cartItem => {
+    const orderItems = user.cart.map((cartItem) => {
       const orderItem = {
         ...cartItem.item,
         quantity: cartItem.quantity,
@@ -348,7 +346,7 @@ const Mutations = {
       },
     });
     // 6. Clean up - clear users cart, delete cartItems
-    const cartItemIds = user.cart.map(cartItem => cartItem.id);
+    const cartItemIds = user.cart.map((cartItem) => cartItem.id);
     await context.db.mutation.deleteManyCartItems({
       where: {
         id_in: cartItemIds,

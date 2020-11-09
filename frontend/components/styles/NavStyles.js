@@ -18,7 +18,7 @@ const NavStyles = styled.ul`
     background: none;
     border: 0;
     cursor: pointer;
-    color: ${props => props.theme.black};
+    color: ${(props) => props.theme.black};
     font-weight: 800;
     @media (max-width: 700px) {
       font-size: 10px;
@@ -27,7 +27,7 @@ const NavStyles = styled.ul`
     &:before {
       content: '';
       width: 2px;
-      background: ${props => props.theme.lightGrey};
+      background: ${(props) => props.theme.lightGrey};
       height: 100%;
       left: 0;
       position: absolute;
@@ -59,7 +59,7 @@ const NavStyles = styled.ul`
     }
   }
   @media (max-width: 1300px) {
-    border-top: 1px solid ${props => props.theme.lightGrey};
+    border-top: 1px solid ${(props) => props.theme.lightGrey};
     width: 100%;
     justify-content: center;
     font-size: 1.5rem;
