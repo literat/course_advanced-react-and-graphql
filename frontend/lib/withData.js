@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import withApollo from 'next-with-apollo';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client';
 import { endpoint, prodEndpoint } from '../config';
 
 function createClient({ headers }) {

@@ -1,4 +1,4 @@
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/react-components';
 import { CURRENT_USER_QUERY } from './User';
 import Signin from './Signin';
 

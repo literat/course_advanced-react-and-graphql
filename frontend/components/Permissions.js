@@ -1,4 +1,5 @@
 import React from 'react';
+import { Query, Mutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Error from './ErrorMessage';
@@ -84,7 +85,7 @@ class UserPermissions extends React.Component {
     this.setState({ permissions: updatedPermissions }, updatePermissions);
   };
 
-  construct(props) {
+  constructor(props) {
     super(props);
     this.state = {
       permissions: props.user.permissions,

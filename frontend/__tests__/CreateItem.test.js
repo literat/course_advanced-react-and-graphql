@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import toJSON from 'enzyme-to-json';
-import { MockedProvider } from 'react-apollo/test-utils';
+import { MockedProvider } from '@apollo/client/testing';
 import Router from 'next/router';
 import CreateItem, { CREATE_ITEM_MUTATION } from '../components/CreateItem';
 import { fakeItem } from '../lib/testUtils';

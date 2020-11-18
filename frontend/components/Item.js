@@ -10,7 +10,7 @@ import DeleteItem from './DeleteItem';
 import AddToCart from './AddToCart';
 
 export default class Item extends Component {
-  static render() {
+  render() {
     const { item } = this.props;
 
     return (

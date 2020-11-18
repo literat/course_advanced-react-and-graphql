@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation } from '@apollo/react-components';
 import gql from 'graphql-tag';
 // eslint-disable-next-line import/no-cycle
 import { ALL_ITEMS_QUERY } from './Items';

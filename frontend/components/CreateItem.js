@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation } from '@apollo/react-components';
 import gql from 'graphql-tag';
 import Router from 'next/router';
 import Form from './styles/Form';
@@ -27,6 +27,16 @@ const CREATE_ITEM_MUTATION = gql`
 `;
 
 class CreateItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+      description: '',
+      image: '',
+      price: 0,
+    };
+  }
+
   handleChange = (event) => {
     const { name, type, value } = event.target;
     const val = type === 'number' ? parseFloat(value) : value;
@@ -49,17 +59,6 @@ class CreateItem extends Component {
       // largeImage: file.eager[0].secure_url,
     });
   };
-
-  construct(props) {
-    super(props);
-    this.state = {
-      title: '',
-      description: '',
-      image: '',
-      largeImage: '',
-      price: 0,
-    };
-  }
 
   render() {
     const { image, title, price, description } = this.state;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation } from '@apollo/react-components';
 import gql from 'graphql-tag';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
@@ -16,17 +16,16 @@ const SIGNIN_MUTATION = gql`
 `;
 
 class Signin extends Component {
-  saveToState = (event) =>
-    this.setState({ [event.target.name]: event.target.value });
-
-  construct(props) {
+  constructor(props) {
     super(props);
     this.state = {
-      name: '',
       email: '',
       password: '',
     };
   }
+
+  saveToState = (event) =>
+    this.setState({ [event.target.name]: event.target.value });
 
   render() {
     const { email, password } = this.state;

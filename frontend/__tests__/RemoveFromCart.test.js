@@ -1,8 +1,8 @@
 import { mount } from 'enzyme';
 import wait from 'waait';
 import toJSON from 'enzyme-to-json';
-import { MockedProvider } from 'react-apollo/test-utils';
-import { ApolloConsumer } from 'react-apollo';
+import { MockedProvider } from '@apollo/client/testing';
+import { ApolloConsumer } from '@apollo/client';
 import RemoveFromCart, {
   REMOVE_FROM_CART_MUTATION,
 } from '../components/RemoveFromCart';

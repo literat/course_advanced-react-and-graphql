@@ -1,6 +1,6 @@
 import React from 'react';
 import Downshift, { resetIdCounter } from 'downshift';
-import { ApolloConsumer } from 'react-apollo';
+import { ApolloConsumer } from '@apollo/client';
 import gql from 'graphql-tag';
 import debounce from 'lodash.debounce';
 import Router from 'next/router';
@@ -50,7 +50,8 @@ class AutoComplete extends React.Component {
     });
   }, 350);
 
-  construct() {
+  constructor(props) {
+    super(props);
     this.state = {
       items: [],
       loading: false,
