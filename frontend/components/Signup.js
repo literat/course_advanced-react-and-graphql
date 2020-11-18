@@ -20,16 +20,21 @@ const SIGNUP_MUTATION = gql`
 `;
 
 class Signup extends Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      email: '',
+      password: '',
+    };
+  }
 
   saveToState = (event) =>
     this.setState({ [event.target.name]: event.target.value });
 
   render() {
+    const { email, name, password } = this.state;
+
     return (
       <Mutation
         mutation={SIGNUP_MUTATION}
@@ -55,7 +60,7 @@ class Signup extends Component {
                   type="email"
                   name="email"
                   placeholder="email"
-                  value={this.state.email}
+                  value={email}
                   onChange={this.saveToState}
                 />
               </label>
@@ -65,7 +70,7 @@ class Signup extends Component {
                   type="text"
                   name="name"
                   placeholder="name"
-                  value={this.state.name}
+                  value={name}
                   onChange={this.saveToState}
                 />
               </label>
@@ -75,7 +80,7 @@ class Signup extends Component {
                   type="password"
                   name="password"
                   placeholder="password"
-                  value={this.state.password}
+                  value={password}
                   onChange={this.saveToState}
                 />
               </label>

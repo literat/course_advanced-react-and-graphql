@@ -1,11 +1,9 @@
-import Link from 'next/link';
-import CreateItem from '../components/CreateItem';
 import Reset from '../components/Reset';
 
-const ResetPage = (props) => (
+const ResetPage = ({ query }) => (
   <div>
     <p>Reset Your Password</p>
-    <Reset resetToken={props.query.resetToken} />
+    <Reset resetToken={query.resetToken} />
   </div>
 );
 

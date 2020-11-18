@@ -4,7 +4,7 @@ function Person(name, foods) {
 }
 
 Person.prototype.fetchFavFoods = function () {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // Simulate an API
     setTimeout(() => resolve(this.foods), 2000);
   });

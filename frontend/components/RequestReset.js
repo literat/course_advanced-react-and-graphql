@@ -13,14 +13,19 @@ const REQUEST_RESET_MUTATION = gql`
 `;
 
 class RequestReset extends Component {
-  state = {
-    email: '',
-  };
-
   saveToState = (event) =>
     this.setState({ [event.target.name]: event.target.value });
 
+  construct(props) {
+    super(props);
+    this.state = {
+      email: '',
+    };
+  }
+
   render() {
+    const { email } = this.state;
+
     return (
       <Mutation mutation={REQUEST_RESET_MUTATION} variables={this.state}>
         {(reset, { error, loading, called }) => (
@@ -45,7 +50,7 @@ class RequestReset extends Component {
                   type="email"
                   name="email"
                   placeholder="email"
-                  value={this.state.email}
+                  value={email}
                   onChange={this.saveToState}
                 />
               </label>

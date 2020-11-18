@@ -15,6 +15,7 @@ const ADD_TO_CART_MUTATION = gql`
 class AddToCart extends React.Component {
   render() {
     const { id } = this.props;
+
     return (
       <Mutation
         mutation={ADD_TO_CART_MUTATION}
@@ -22,7 +23,7 @@ class AddToCart extends React.Component {
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
         {(addToCart, { loading }) => (
-          <button disabled={loading} onClick={addToCart}>
+          <button type="button" disabled={loading} onClick={addToCart}>
             Add{loading && 'ing'} To Cart 🛒
           </button>
         )}

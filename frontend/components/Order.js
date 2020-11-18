@@ -31,17 +31,16 @@ const SINGLE_ORDER_QUERY = gql`
 `;
 
 class Order extends Component {
-  static propTypes = {
-    id: PropTypes.string.isRequired,
-  };
+  static render() {
+    const { id } = this.props;
 
-  render() {
     return (
-      <Query query={SINGLE_ORDER_QUERY} variables={{ id: this.props.id }}>
+      <Query query={SINGLE_ORDER_QUERY} variables={{ id }}>
         {({ data, error, loading }) => {
           if (error) return <Error error={error} />;
           if (loading) return <p>Loading...</p>;
           const { order } = data;
+
           return (
             <OrderStyles data-test="order">
               <Head>
@@ -49,7 +48,7 @@ class Order extends Component {
               </Head>
               <p>
                 <span>Order ID:</span>
-                <span>{this.props.id}</span>
+                <span>{id}</span>
               </p>
               <p>
                 <span>Charge</span>
@@ -88,6 +87,10 @@ class Order extends Component {
     );
   }
 }
+
+Order.propTypes = {
+  id: PropTypes.string.isRequired,
+};
 
 export default Order;
 export { SINGLE_ORDER_QUERY };

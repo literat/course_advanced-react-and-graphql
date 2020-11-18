@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import casual from 'casual';
 
 // seed it so we get consistent results

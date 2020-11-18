@@ -3,10 +3,8 @@ import StripeCheckout from 'react-stripe-checkout';
 import { Mutation } from 'react-apollo';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import calcTotalPrice from '../lib/calcTotalPrice';
-import Error from './ErrorMessage';
 import { CURRENT_USER_QUERY, useUser } from './User';
 
 const CREATE_ORDER_MUTATION = gql`
@@ -27,8 +25,8 @@ function totalItems(cart) {
   return cart.reduce((tally, cartItem) => tally + cartItem.quantity, 0);
 }
 
-function TakeMyMoney() {
-  onToken = async (response, createOrder) => {
+function TakeMyMoney({ children }) {
+  const onToken = async (response, createOrder) => {
     NProgress.start();
     // manually call the mutation once we have the stripe token
     const order = await createOrder({
@@ -60,9 +58,9 @@ function TakeMyMoney() {
           stripeKey="pk_test_U14ioBw6xxpeuipRvQlXBrTM00WMliJkBf"
           currency="USD"
           email={me.email}
-          token={(response) => this.onToken(response, createOrder)}
+          token={(response) => onToken(response, createOrder)}
         >
-          {this.props.children}
+          {children}
         </StripeCheckout>
       )}
     </Mutation>

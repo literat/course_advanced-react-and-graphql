@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
 import Form from './styles/Form';
-import formatMoney from '../lib/formatMoney';
+// import formatMoney from '../lib/formatMoney';
 import Error from './ErrorMessage';
 
 const CREATE_ITEM_MUTATION = gql`
@@ -27,14 +27,6 @@ const CREATE_ITEM_MUTATION = gql`
 `;
 
 class CreateItem extends Component {
-  state = {
-    title: '',
-    description: '',
-    image: '',
-    largeImage: '',
-    price: 0,
-  };
-
   handleChange = (event) => {
     const { name, type, value } = event.target;
     const val = type === 'number' ? parseFloat(value) : value;
@@ -54,11 +46,24 @@ class CreateItem extends Component {
     const file = await response.json();
     this.setState({
       image: file.secure_url,
-      largeImage: file.eager[0].secure_url,
+      // largeImage: file.eager[0].secure_url,
     });
   };
 
+  construct(props) {
+    super(props);
+    this.state = {
+      title: '',
+      description: '',
+      image: '',
+      largeImage: '',
+      price: 0,
+    };
+  }
+
   render() {
+    const { image, title, price, description } = this.state;
+
     return (
       <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
         {(createItem, { loading, error }) => (
@@ -89,13 +94,7 @@ class CreateItem extends Component {
                   required
                   onChange={this.uploadFile}
                 />
-                {this.state.image && (
-                  <img
-                    src={this.state.image}
-                    width="200"
-                    alt="Upload Preview"
-                  />
-                )}
+                {image && <img src={image} width="200" alt="Upload Preview" />}
               </label>
               <label htmlFor="title">
                 Title
@@ -105,7 +104,7 @@ class CreateItem extends Component {
                   name="title"
                   placeholder="Title"
                   required
-                  value={this.state.title}
+                  value={title}
                   onChange={this.handleChange}
                 />
               </label>
@@ -117,7 +116,7 @@ class CreateItem extends Component {
                   name="price"
                   placeholder="Price"
                   required
-                  value={this.state.price}
+                  value={price}
                   onChange={this.handleChange}
                 />
               </label>
@@ -129,7 +128,7 @@ class CreateItem extends Component {
                   name="description"
                   placeholder="Enter a Description"
                   required
-                  value={this.state.description}
+                  value={description}
                   onChange={this.handleChange}
                 />
               </label>

@@ -40,6 +40,7 @@ class OrderList extends Component {
           if (loading) return <p>Loading...</p>;
           if (error) return <Error error={error} />;
           console.log(orders);
+
           return (
             <div>
               <h2>You have {orders.length} orders</h2>

@@ -51,6 +51,7 @@ const Query = {
     if (!ownsOrder || !hasPermissionToSeeOrder) {
       throw new Error("You can't see this budddd");
     }
+
     // 4. Return the order
     return order;
   },
@@ -59,6 +60,7 @@ const Query = {
     if (!context.request.userId) {
       throw new Error("You aren't logged in");
     }
+
     return context.db.query.orders(
       {
         where: {

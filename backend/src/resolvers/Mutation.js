@@ -34,6 +34,7 @@ const Mutations = {
     const updates = { ...args };
     // remove ID from updates
     delete updates.id;
+
     // run the update method
     return context.db.mutation.updateItem(
       {
@@ -61,6 +62,7 @@ const Mutations = {
     if (!ownsItem && !hasPermissions) {
       throw new Error("You don't have permission to do that!");
     }
+
     // 3. Delete it!
     return context.db.mutation.deleteItem({ where }, info);
   },
@@ -87,10 +89,11 @@ const Mutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
     });
+
     // Finallllly we return the user to the browser
     return user;
   },
-  async signin(parent, { email, password }, context, info) {
+  async signin(parent, { email, password }, context) {
     // 1. Check if there is a user with that email
     const user = await context.db.query.user({ where: { email } });
     if (!user) {
@@ -108,14 +111,16 @@ const Mutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
     });
+
     // 5. Return the user
     return user;
   },
-  signout(parent, args, context, info) {
+  signout(parent, args, context) {
     context.response.clearCookie('token');
+
     return { message: 'Goodbye!' };
   },
-  async requestReset(parent, args, context, info) {
+  async requestReset(parent, args, context) {
     // 1. Check if this is a real user
     const user = await context.db.query.user({ where: { email: args.email } });
 
@@ -126,7 +131,7 @@ const Mutations = {
     const randomBytesPromisified = promisify(randomBytes);
     const resetToken = (await randomBytesPromisified(20)).toString('hex');
     const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
-    const response = await context.db.mutation.updateUser({
+    await context.db.mutation.updateUser({
       where: { email: args.email },
       data: {
         resetToken,
@@ -135,7 +140,7 @@ const Mutations = {
     });
 
     // 3. Email them that reset token
-    const mailResponse = await transport.sendMail({
+    await transport.sendMail({
       from: 'wes@wesbos.com',
       to: user.email,
       subject: 'Your Password Reset Token',
@@ -147,7 +152,7 @@ const Mutations = {
     // 4. Return the message
     return { message: 'Thanks!' };
   },
-  async resetPassword(parent, args, context, info) {
+  async resetPassword(parent, args, context) {
     // 1. Check if the passwords match
     if (args.password !== args.confirmPassword) {
       throw new Error("Yo Passwords don't match!");
@@ -183,6 +188,7 @@ const Mutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
+
     // 8. return the message
     return { message: 'Your password has been reset!' };
   },
@@ -202,6 +208,7 @@ const Mutations = {
     );
     // 3. Check if they have permissions to do this
     hasPermission(currentUser, ['ADMIN', 'PERMISSIONUPDATE']);
+
     // 4. Update the permissions
     return context.db.mutation.updateUser(
       {
@@ -235,6 +242,7 @@ const Mutations = {
     // 3. Check if that item is already in their cart and increment by 1 if it is
     if (existingCartItem) {
       console.log('This item is already in their cart');
+
       return context.db.mutation.updateCartItem(
         {
           where: {
@@ -247,6 +255,7 @@ const Mutations = {
         info
       );
     }
+
     // 4. If it is not, create a fresh CartItem for that user!
     return context.db.mutation.createCartItem(
       {
@@ -278,6 +287,7 @@ const Mutations = {
     if (cartItem.user.id !== context.request.userId) {
       throw new Error('Cheatin huhhhh');
     }
+
     // 3. Delete the cart item
     return context.db.mutation.deleteCartItem(
       {
@@ -286,7 +296,7 @@ const Mutations = {
       info
     );
   },
-  async createOrder(parent, args, context, info) {
+  async createOrder(parent, args, context) {
     // 1. Query the current user and make sure they are signed in
     const { userId } = context.request;
     if (!userId)
@@ -352,6 +362,7 @@ const Mutations = {
         id_in: cartItemIds,
       },
     });
+
     // 7. Return the Order to the client
     return order;
   },

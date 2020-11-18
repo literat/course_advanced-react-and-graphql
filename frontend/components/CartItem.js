@@ -28,6 +28,7 @@ const CartItem = ({ cartItem }) => {
         <RemoveFromCart id={cartItem.id} />
       </CartItemStyles>
     );
+
   return (
     <CartItemStyles>
       <img width="100" src={cartItem.item.image} alt={cartItem.item.title} />

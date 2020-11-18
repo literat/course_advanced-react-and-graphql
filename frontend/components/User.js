@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
-import { useState, useEffect } from 'react';
 
 const CURRENT_USER_QUERY = gql`
   query {
@@ -28,7 +27,7 @@ const CURRENT_USER_QUERY = gql`
 `;
 
 function useUser() {
-  const { data, loading, error } = useQuery(CURRENT_USER_QUERY);
+  const { data } = useQuery(CURRENT_USER_QUERY);
   if (data) {
     return data.me;
   }

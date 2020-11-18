@@ -34,6 +34,7 @@ const DisplayError = ({ error }) => {
       </ErrorStyles>
     ));
   }
+
   return (
     <ErrorStyles>
       <p data-test="graphql-error">

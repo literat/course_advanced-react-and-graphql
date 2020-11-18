@@ -33,11 +33,6 @@ function routeToItem(item) {
 }
 
 class AutoComplete extends React.Component {
-  state = {
-    items: [],
-    loading: false,
-  };
-
   onChange = debounce(async (event, client) => {
     console.log('Searching...');
     // turn loading on
@@ -55,8 +50,16 @@ class AutoComplete extends React.Component {
     });
   }, 350);
 
+  construct() {
+    this.state = {
+      items: [],
+      loading: false,
+    };
+  }
+
   render() {
     resetIdCounter();
+
     return (
       <SearchStyles>
         <Downshift
@@ -74,11 +77,13 @@ class AutoComplete extends React.Component {
               <ApolloConsumer>
                 {(client) => (
                   <input
+                    // eslint-disable-next-line react/jsx-props-no-spreading
                     {...getInputProps({
                       type: 'search',
                       placeholder: 'Search For An Item',
                       id: 'search',
-                      className: this.state.loading ? 'loading' : '',
+                      // eslint-disable-next-line react/destructuring-assignment
+                      className: this.state?.loading ? 'loading' : '',
                       onChange: (event) => {
                         event.persist();
                         this.onChange(event, client);
@@ -89,10 +94,12 @@ class AutoComplete extends React.Component {
               </ApolloConsumer>
               {isOpen && (
                 <DropDown>
+                  {/* eslint-disable-next-line react/destructuring-assignment */}
                   {this.state.items.map((item, index) => (
                     <DropDownItem
                       key={item.id}
                       highlighted={index === highlightedIndex}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...getItemProps({
                         item,
                       })}
@@ -101,6 +108,7 @@ class AutoComplete extends React.Component {
                       {item.title}
                     </DropDownItem>
                   ))}
+                  {/* eslint-disable-next-line react/destructuring-assignment */}
                   {!this.state.items.length && !this.state.loading && (
                     <DropDownItem>Nothing Found {inputValue}</DropDownItem>
                   )}

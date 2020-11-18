@@ -27,7 +27,7 @@ export default function useForm(initial = {}) {
 
   function resetForm() {
     // oh - just use the default state passed in
-    updateInputs(initial);
+    setInputs(initial);
   }
 
   function clearForm() {

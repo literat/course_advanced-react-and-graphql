@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+// eslint-disable-next-line import/no-cycle
 import { ALL_ITEMS_QUERY } from './Items';
 
 const DELETE_ITEM_MUTATION = gql`
@@ -25,21 +26,25 @@ class DeleteItem extends Component {
   };
 
   render() {
+    const { id, children } = this.props;
+
     return (
       <Mutation
         mutation={DELETE_ITEM_MUTATION}
-        variables={{ id: this.props.id }}
+        variables={{ id }}
         update={this.update}
       >
         {(deleteItem, { error }) => (
           <button
+            type="button"
             onClick={() => {
+              // eslint-disable-next-line no-restricted-globals
               if (confirm('Are you sure you want to delete this item?')) {
                 deleteItem().catch((error) => alert(error.message));
               }
             }}
           >
-            {this.props.children}
+            {children}
           </button>
         )}
       </Mutation>

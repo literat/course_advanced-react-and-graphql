@@ -1,4 +1,3 @@
-import { format } from 'util';
 import formatMoney from '../lib/formatMoney';
 
 describe('formatMoney Function', () => {

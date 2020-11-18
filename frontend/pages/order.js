@@ -1,10 +1,10 @@
 import PleaseSignIn from '../components/PleaseSignIn';
 import Order from '../components/Order';
 
-const OrderPage = (props) => (
+const OrderPage = ({ query }) => (
   <div>
     <PleaseSignIn>
-      <Order id={props.query.id} />
+      <Order id={query.id} />
     </PleaseSignIn>
   </div>
 );

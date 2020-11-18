@@ -78,12 +78,14 @@ injectGlobal`
 
 class Page extends Component {
   render() {
+    const { children } = this.props;
+
     return (
       <ThemeProvider theme={theme}>
         <StyledPage>
           <Meta />
           <Header />
-          <Inner>{this.props.children}</Inner>
+          <Inner>{children}</Inner>
         </StyledPage>
       </ThemeProvider>
     );

@@ -61,7 +61,7 @@ function UpdateItem({ id }) {
     <Form
       onSubmit={async (event) => {
         event.preventDefault();
-        const response = await updateItem();
+        await updateItem();
       }}
     >
       <Error error={error} />
@@ -109,7 +109,7 @@ function UpdateItem({ id }) {
 }
 
 UpdateItem.propTypes = {
-  id: PropTypes.string.isRequred,
+  id: PropTypes.string.isRequired,
 };
 
 export default UpdateItem;

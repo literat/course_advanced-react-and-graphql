@@ -60,6 +60,7 @@ describe('<RemoveFromCart />', () => {
         <ApolloConsumer>
           {(client) => {
             apolloClient = client;
+
             return <RemoveFromCart id="abc123" />;
           }}
         </ApolloConsumer>

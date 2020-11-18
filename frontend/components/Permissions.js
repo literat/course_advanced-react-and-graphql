@@ -1,4 +1,4 @@
-import { Query, Mutation } from 'react-apollo';
+import React from 'react';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Error from './ErrorMessage';
@@ -36,9 +36,9 @@ const UPDATE_PERMISSIONS_MUTATION = gql`
   }
 `;
 
-const Permissions = (props) => (
+const Permissions = () => (
   <Query query={ALL_USERS_QUERY}>
-    {({ data, loading, error }) => (
+    {({ data, error }) => (
       <div>
         <Error error={error} />
         <div>
@@ -67,23 +67,11 @@ const Permissions = (props) => (
 );
 
 class UserPermissions extends React.Component {
-  static propTypes = {
-    user: PropTypes.shape({
-      name: PropTypes.string,
-      email: PropTypes.string,
-      id: PropTypes.string,
-      permissions: PropTypes.array,
-    }).isRequired,
-  };
-
-  state = {
-    permissions: this.props.user.permissions,
-  };
-
-  handlePermissionChange = (event, updatePermissions) => {
+  static handlePermissionChange = (event, updatePermissions) => {
     const checkbox = event.target;
+    const { permissions } = this.state;
     // take a copy of the current permissions
-    let updatedPermissions = [...this.state.permissions];
+    let updatedPermissions = [...permissions];
     // figure out if we need to remove or add this permission
     if (checkbox.checked) {
       // and add it in
@@ -96,15 +84,23 @@ class UserPermissions extends React.Component {
     this.setState({ permissions: updatedPermissions }, updatePermissions);
   };
 
+  construct(props) {
+    super(props);
+    this.state = {
+      permissions: props.user.permissions,
+    };
+  }
+
   render() {
     const { user } = this.props;
+    const { permissions } = this.state;
 
     return (
       <Mutation
         mutation={UPDATE_PERMISSIONS_MUTATION}
         variables={{
-          permissions: this.state.permissions,
-          userId: this.props.user.id,
+          permissions,
+          userId: user.id,
         }}
       >
         {(updatePermissions, { loading, error }) => (
@@ -125,7 +121,7 @@ class UserPermissions extends React.Component {
                     <input
                       id={`${user.id}-permission-${permission}`}
                       type="checkbox"
-                      checked={this.state.permissions.includes(permission)}
+                      checked={permissions.includes(permission)}
                       value={permission}
                       onChange={(event) =>
                         this.handlePermissionChange(event, updatePermissions)
@@ -150,5 +146,14 @@ class UserPermissions extends React.Component {
     );
   }
 }
+
+UserPermissions.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    email: PropTypes.string,
+    id: PropTypes.string,
+    permissions: PropTypes.array,
+  }).isRequired,
+};
 
 export default Permissions;

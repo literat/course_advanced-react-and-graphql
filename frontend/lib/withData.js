@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import withApollo from 'next-with-apollo';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -18,9 +19,11 @@ function createClient({ headers }) {
 }
 
 function renderPage({ Page, props }) {
+  const { apollo, ...rest } = props;
+
   return (
-    <ApolloProvider client={props.apollo}>
-      <Page {...props} />
+    <ApolloProvider client={apollo}>
+      <Page {...rest} />
     </ApolloProvider>
   );
 }

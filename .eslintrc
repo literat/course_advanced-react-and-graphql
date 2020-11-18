@@ -1,5 +1,10 @@
 {
+  "root": true,
   "extends": [
     "wesbos"
-  ]
+  ],
+  "rules": {
+    "react/prop-types": ["warn"],
+    "newline-before-return": ["error"]
+  }
 }

@@ -70,6 +70,7 @@ describe('<Signup />', () => {
         <ApolloConsumer>
           {(client) => {
             apolloClient = client;
+
             return <Signup />;
           }}
         </ApolloConsumer>

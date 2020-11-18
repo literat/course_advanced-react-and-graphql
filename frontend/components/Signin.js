@@ -16,16 +16,21 @@ const SIGNIN_MUTATION = gql`
 `;
 
 class Signin extends Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
-  };
-
   saveToState = (event) =>
     this.setState({ [event.target.name]: event.target.value });
 
+  construct(props) {
+    super(props);
+    this.state = {
+      name: '',
+      email: '',
+      password: '',
+    };
+  }
+
   render() {
+    const { email, password } = this.state;
+
     return (
       <Mutation
         mutation={SIGNIN_MUTATION}
@@ -37,8 +42,8 @@ class Signin extends Component {
             method="post"
             onSubmit={async (event) => {
               event.preventDefault();
-              const response = await signin();
-              this.setState({ name: '', email: '', password: '' });
+              await signin();
+              this.setState({ email: '', password: '' });
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
@@ -50,7 +55,7 @@ class Signin extends Component {
                   type="email"
                   name="email"
                   placeholder="email"
-                  value={this.state.email}
+                  value={email}
                   onChange={this.saveToState}
                 />
               </label>
@@ -60,7 +65,7 @@ class Signin extends Component {
                   type="password"
                   name="password"
                   placeholder="password"
-                  value={this.state.password}
+                  value={password}
                   onChange={this.saveToState}
                 />
               </label>
