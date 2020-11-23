@@ -1,9 +1,9 @@
 import React from 'react';
 import Downshift, { resetIdCounter } from 'downshift';
-import { ApolloConsumer } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import debounce from 'lodash.debounce';
-import Router from 'next/router';
 import { DropDown, DropDownItem, SearchStyles } from './styles/DropDown';
 
 const SEARCH_ITEMS_QUERY = gql`
@@ -23,104 +23,76 @@ const SEARCH_ITEMS_QUERY = gql`
   }
 `;
 
-function routeToItem(item) {
-  Router.push({
-    pathname: '/item',
-    query: {
-      id: item.id,
-    },
+function AutoComplete() {
+  const router = useRouter();
+  const [findItems, { loading, data }] = useLazyQuery(SEARCH_ITEMS_QUERY, {
+    fetchPolicy: 'no-cache',
   });
-}
+  const items = data ? data.items : [];
+  const findItemsButChill = debounce(findItems, 350);
+  resetIdCounter();
 
-class AutoComplete extends React.Component {
-  onChange = debounce(async (event, client) => {
-    console.log('Searching...');
-    // turn loading on
-    this.setState({
-      loading: true,
-    });
-    // Manually query apollo client
-    const response = await client.query({
-      query: SEARCH_ITEMS_QUERY,
-      variables: { searchTerm: event.target.value },
-    });
-    this.setState({
-      items: response.data.items,
-      loading: false,
-    });
-  }, 350);
+  return (
+    <SearchStyles>
+      <Downshift
+        onChange={(item) =>
+          router.push({
+            pathname: '/item',
+            query: {
+              id: item.id,
+            },
+          })
+        }
+        itemToString={(item) => (item === null ? '' : item.title)}
+      >
+        {({
+          getInputProps,
+          getItemProps,
+          isOpen,
+          inputValue,
+          highlightedIndex,
+        }) => (
+          <div>
+            <input
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...getInputProps({
+                type: 'search',
+                placeholder: 'Search For An Item',
+                id: 'search',
+                className: loading ? 'loading' : '',
+                onChange: (e) => {
+                  e.persist();
+                  if (!e.target.value) return; // if it's empty, don't search
+                  findItemsButChill({
+                    variables: { searchTerm: e.target.value },
+                  });
+                },
+              })}
+            />
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      loading: false,
-    };
-  }
-
-  render() {
-    resetIdCounter();
-
-    return (
-      <SearchStyles>
-        <Downshift
-          onChange={routeToItem}
-          itemToString={(item) => (item === null ? '' : item.title)}
-        >
-          {({
-            getInputProps,
-            getItemProps,
-            isOpen,
-            inputValue,
-            highlightedIndex,
-          }) => (
-            <div>
-              <ApolloConsumer>
-                {(client) => (
-                  <input
+            {isOpen && inputValue && (
+              <DropDown>
+                {items.map((item, index) => (
+                  <DropDownItem
                     // eslint-disable-next-line react/jsx-props-no-spreading
-                    {...getInputProps({
-                      type: 'search',
-                      placeholder: 'Search For An Item',
-                      id: 'search',
-                      // eslint-disable-next-line react/destructuring-assignment
-                      className: this.state?.loading ? 'loading' : '',
-                      onChange: (event) => {
-                        event.persist();
-                        this.onChange(event, client);
-                      },
-                    })}
-                  />
+                    {...getItemProps({ item })}
+                    key={item.id}
+                    highlighted={index === highlightedIndex}
+                  >
+                    <img width="50" src={item.image} alt={item.title} />
+                    {item.title}
+                  </DropDownItem>
+                ))}
+                {!items.length && !loading && (
+                  <DropDownItem> Nothing Found {inputValue}</DropDownItem>
                 )}
-              </ApolloConsumer>
-              {isOpen && (
-                <DropDown>
-                  {/* eslint-disable-next-line react/destructuring-assignment */}
-                  {this.state.items.map((item, index) => (
-                    <DropDownItem
-                      key={item.id}
-                      highlighted={index === highlightedIndex}
-                      // eslint-disable-next-line react/jsx-props-no-spreading
-                      {...getItemProps({
-                        item,
-                      })}
-                    >
-                      <img width="50" src={item.image} alt={item.title} />
-                      {item.title}
-                    </DropDownItem>
-                  ))}
-                  {/* eslint-disable-next-line react/destructuring-assignment */}
-                  {!this.state.items.length && !this.state.loading && (
-                    <DropDownItem>Nothing Found {inputValue}</DropDownItem>
-                  )}
-                </DropDown>
-              )}
-            </div>
-          )}
-        </Downshift>
-      </SearchStyles>
-    );
-  }
+              </DropDown>
+            )}
+          </div>
+        )}
+      </Downshift>
+    </SearchStyles>
+  );
 }
 
 export default AutoComplete;

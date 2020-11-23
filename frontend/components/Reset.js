@@ -1,4 +1,3 @@
-import React from 'react';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
@@ -40,15 +39,15 @@ function Reset({ resetToken }) {
     }
   );
 
-  console.log(data);
-
   return (
     <Form
       method="post"
-      onSubmit={async (event) => {
-        event.preventDefault();
-        await resetPassword();
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const res = await resetPassword();
+        console.log(res);
         resetForm();
+        // this.setState({ password: '', confirmPassword: '' });
       }}
     >
       <fieldset disabled={loading} aria-busy={loading}>
@@ -63,8 +62,10 @@ function Reset({ resetToken }) {
             placeholder="password"
             value={inputs.password}
             onChange={handleChange}
+            required
           />
         </label>
+
         <label htmlFor="confirmPassword">
           Confirm Your Password
           <input
@@ -73,9 +74,11 @@ function Reset({ resetToken }) {
             placeholder="confirmPassword"
             value={inputs.confirmPassword}
             onChange={handleChange}
+            required
           />
         </label>
-        <button type="submit">Reset Your Password</button>
+
+        <button type="submit">Reset Your Password!</button>
       </fieldset>
     </Form>
   );

@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
-import { Mutation } from '@apollo/react-components';
+import React from 'react';
+import { useMutation } from '@apollo/client';
+
 import gql from 'graphql-tag';
+import useForm from '../lib/useForm';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
 import { CURRENT_USER_QUERY } from './User';
@@ -15,66 +17,56 @@ const SIGNIN_MUTATION = gql`
   }
 `;
 
-class Signin extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-    };
-  }
+function Signin() {
+  const { inputs, handleChange, resetForm } = useForm({
+    email: '',
+    password: '',
+  });
+  const [signin, { error, loading }] = useMutation(SIGNIN_MUTATION, {
+    variables: inputs,
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
 
-  saveToState = (event) =>
-    this.setState({ [event.target.name]: event.target.value });
+  return (
+    <Form
+      method="post"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const res = await signin();
+        console.log(res);
+        resetForm();
+      }}
+    >
+      <fieldset disabled={loading} aria-busy={loading}>
+        <h2>Sign into your account</h2>
+        <Error error={error} />
+        <label htmlFor="email">
+          Email
+          <input
+            type="email"
+            name="email"
+            placeholder="email"
+            value={inputs.email}
+            onChange={handleChange}
+            autoComplete="email"
+          />
+        </label>
+        <label htmlFor="password">
+          Password
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            value={inputs.password}
+            onChange={handleChange}
+            autoComplete="new-password"
+          />
+        </label>
 
-  render() {
-    const { email, password } = this.state;
-
-    return (
-      <Mutation
-        mutation={SIGNIN_MUTATION}
-        variables={this.state}
-        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-      >
-        {(signin, { error, loading }) => (
-          <Form
-            method="post"
-            onSubmit={async (event) => {
-              event.preventDefault();
-              await signin();
-              this.setState({ email: '', password: '' });
-            }}
-          >
-            <fieldset disabled={loading} aria-busy={loading}>
-              <h2>Sign into your account</h2>
-              <Error error={error} />
-              <label htmlFor="email">
-                Email
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="email"
-                  value={email}
-                  onChange={this.saveToState}
-                />
-              </label>
-              <label htmlFor="password">
-                Password
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="password"
-                  value={password}
-                  onChange={this.saveToState}
-                />
-              </label>
-              <button type="submit">Sign in!</button>
-            </fieldset>
-          </Form>
-        )}
-      </Mutation>
-    );
-  }
+        <button type="submit">Sign In!</button>
+      </fieldset>
+    </Form>
+  );
 }
 
 export default Signin;

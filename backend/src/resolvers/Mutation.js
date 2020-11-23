@@ -192,6 +192,9 @@ const Mutations = {
     // 8. return the message
     return { message: 'Your password has been reset!' };
   },
+  async updateUser(parent, args, context) {
+    console.log(args.name);
+  },
   async updatePermissions(parent, args, context, info) {
     // 1. Check if they are logged in
     if (!context.request.userId) {

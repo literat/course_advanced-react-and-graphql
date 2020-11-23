@@ -3,28 +3,26 @@ import { useUser } from './User';
 import CartStyles from './styles/CartStyles';
 import Supreme from './styles/Supreme';
 import CloseButton from './styles/CloseButton';
-import SickButton from './styles/SickButton';
 import CartItem from './CartItem';
 import calcTotalPrice from '../lib/calcTotalPrice';
 import formatMoney from '../lib/formatMoney';
-import TakeMyMoney from './TakeMyMoney';
+import Checkout from './Checkout';
 
 function Cart() {
   const me = useUser();
-  const { cartOpen, /* setCartOpen, */ toggleCart } = useCart();
-
-  if (!me) return null;
+  const { cartOpen, toggleCart } = useCart();
+  if (!me) return <p>not logged in</p>;
 
   return (
-    <CartStyles open={cartOpen}>
+    <CartStyles open={cartOpen} data-testid="cart">
       <header>
-        <CloseButton title="close" onClick={toggleCart}>
+        <CloseButton onClick={toggleCart} title="close">
           &times;
         </CloseButton>
         <Supreme>{me.name}'s Cart</Supreme>
         <p>
-          You Have {me.cart.length} Item
-          {me.cart.length === 1 ? '' : 's'} in your cart.
+          You Have {me.cart.length} Item{me.cart.length === 1 ? '' : 's'} in
+          your cart.
         </p>
       </header>
       <ul>
@@ -32,14 +30,12 @@ function Cart() {
           <CartItem key={cartItem.id} cartItem={cartItem} />
         ))}
       </ul>
-      <footer>
-        <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-        {me.cart.length && (
-          <TakeMyMoney>
-            <SickButton>Checkout</SickButton>
-          </TakeMyMoney>
-        )}
-      </footer>
+      {me.cart.length > 0 && (
+        <footer>
+          <p>{formatMoney(calcTotalPrice(me.cart))}</p>
+          <Checkout />
+        </footer>
+      )}
     </CartStyles>
   );
 }

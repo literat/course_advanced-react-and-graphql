@@ -15,7 +15,8 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.2.4",
-    "@apollo/react-components": "^4.0.0",
+    "@stripe/react-stripe-js": "^1.1.2",
+    "@stripe/stripe-js": "^1.11.0",
     "apollo-boost": "^0.1.28",
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-styled-components": "^1.7.1",
@@ -33,7 +34,6 @@
     "react": "^16.13.1",
     "react-adopt": "^0.6.0",
     "react-dom": "^16.13.1",
-    "react-stripe-checkout": "^2.6.3",
     "react-transition-group": "^2.5.0",
     "styled-components": "^3.4.9",
     "waait": "^1.0.2"

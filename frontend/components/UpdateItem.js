@@ -15,7 +15,6 @@ const SINGLE_ITEM_QUERY = gql`
     }
   }
 `;
-
 const UPDATE_ITEM_MUTATION = gql`
   mutation UPDATE_ITEM_MUTATION(
     $id: ID!
@@ -36,14 +35,17 @@ const UPDATE_ITEM_MUTATION = gql`
     }
   }
 `;
-
 function UpdateItem({ id }) {
   const { data = {}, loading } = useQuery(SINGLE_ITEM_QUERY, {
     variables: {
       id,
     },
   });
-  const { inputs, handleChange } = useForm(data.item);
+
+  const { inputs, handleChange } = useForm(
+    data.item || { title: '', price: '', description: '' }
+  );
+
   const [updateItem, { loading: updating, error }] = useMutation(
     UPDATE_ITEM_MUTATION,
     {
@@ -53,17 +55,18 @@ function UpdateItem({ id }) {
       },
     }
   );
-
   if (loading) return <p>Loading...</p>;
   if (!data || !data.item) return <p>No Item Found for ID {id}</p>;
 
   return (
     <Form
-      onSubmit={async (event) => {
-        event.preventDefault();
-        await updateItem();
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const res = await updateItem();
+        console.log(res);
       }}
     >
+      <p>{data.item.title}</p>
       <Error error={error} />
       <fieldset disabled={updating} aria-busy={updating}>
         <label htmlFor="title">
@@ -78,10 +81,11 @@ function UpdateItem({ id }) {
             onChange={handleChange}
           />
         </label>
+
         <label htmlFor="price">
           Price
           <input
-            type="text"
+            type="number"
             id="price"
             name="price"
             placeholder="Price"
@@ -90,13 +94,13 @@ function UpdateItem({ id }) {
             onChange={handleChange}
           />
         </label>
+
         <label htmlFor="description">
           Description
           <textarea
-            type="text"
             id="description"
             name="description"
-            placeholder="Enter a Description"
+            placeholder="Enter A Description"
             required
             value={inputs.description}
             onChange={handleChange}

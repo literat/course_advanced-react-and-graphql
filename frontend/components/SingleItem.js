@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from '@apollo/react-components';
+import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import Head from 'next/head';
 import Error from './ErrorMessage';
@@ -35,40 +35,27 @@ const SINGLE_ITEM_QUERY = gql`
   }
 `;
 
-class SingleItem extends Component {
-  render() {
-    const { id } = this.props;
+function SingleItem({ id }) {
+  const { loading, error, data } = useQuery(SINGLE_ITEM_QUERY, {
+    variables: { id },
+  });
+  if (error) return <Error error={error} />;
+  if (loading) return <p>Loading...</p>;
+  if (!data.item) return <p>No Item Found for {id}</p>;
+  const { item } = data;
 
-    return (
-      <Query
-        query={SINGLE_ITEM_QUERY}
-        variables={{
-          id,
-        }}
-      >
-        {({ error, loading, data }) => {
-          if (loading) return <p>Loading...</p>;
-          if (error) return <Error error={error} />;
-          if (!data.item) return <p>No Item Found for {id}</p>;
-
-          const { item } = data;
-
-          return (
-            <SingleItemStyles>
-              <Head>
-                <title>Sick Fits | {item.title}</title>
-              </Head>
-              <img src={item.largeImage} alt={item.title} />
-              <div className="details">
-                <h2>Viewing {item.title}</h2>
-                <p>{item.description}</p>
-              </div>
-            </SingleItemStyles>
-          );
-        }}
-      </Query>
-    );
-  }
+  return (
+    <SingleItemStyles data-testid="singleItem">
+      <Head>
+        <title>Sick Fits | {item.title}</title>
+      </Head>
+      <img src={item.largeImage} alt={item.title} />
+      <div className="details">
+        <h2>Viewing {item.title}</h2>
+        <p>{item.description}</p>
+      </div>
+    </SingleItemStyles>
+  );
 }
 
 export default SingleItem;
