@@ -1,22 +1,24 @@
-import { shallow } from 'enzyme';
-import toJSON from 'enzyme-to-json';
+import { render } from '@testing-library/react';
+import wait from 'waait';
 import CartCount from '../components/CartCount';
 
-describe('<CartCount />', () => {
+describe('<CartCount/>', () => {
   it('renders', () => {
-    shallow(<CartCount count={10} />);
+    render(<CartCount count={10} />);
   });
 
-  it('matches snapshot', () => {
-    const wrapper = shallow(<CartCount count={10} />);
-
-    expect(toJSON(wrapper)).toMatchSnapshot();
+  it('matches the snapshot', () => {
+    const { container } = render(<CartCount count={11} />);
+    expect(container).toMatchSnapshot();
   });
 
-  it('updates via props', () => {
-    const wrapper = shallow(<CartCount count={50} />);
-    expect(toJSON(wrapper)).toMatchSnapshot();
-    wrapper.setProps({ count: 10 });
-    expect(toJSON(wrapper)).toMatchSnapshot();
+  it('updates via props', async () => {
+    const { container, rerender } = render(<CartCount count={11} />);
+    expect(container.textContent).toBe('11');
+    rerender(<CartCount count={12} />);
+    expect(container.textContent).toBe('1211');
+    await wait(500);
+    expect(container.textContent).toBe('12');
+    expect(container).toMatchSnapshot();
   });
 });

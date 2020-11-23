@@ -1,43 +1,58 @@
-import { shallow } from 'enzyme';
-import toJSON from 'enzyme-to-json';
+import { render, screen } from '@testing-library/react';
+import { MockedProvider } from '@apollo/react-testing';
 import ItemComponent from '../components/Item';
+import { fakeItem } from '../lib/testUtils';
 
-const fakeItem = {
-  id: 'ABC123',
-  title: 'A Cool Item',
-  price: 5000,
-  description: 'This item is really cool!',
-  image: 'dog.jpg',
-  largeImage: 'largedog.jpg',
-};
+const item = fakeItem();
 
-describe('<Item />', () => {
+describe('<Item/>', () => {
   it('renders and matches the snapshot', () => {
-    const wrapper = shallow(<ItemComponent item={fakeItem} />);
-    expect(toJSON(wrapper)).toMatchSnapshot();
-  });
-  /* it('renders the image properly', () => {
-    const wrapper = shallow(<ItemComponent item={fakeItem} />);
-    const img = wrapper.find('img');
-
-    expect(img.props().src).toBe(fakeItem.image);
-    expect(img.props().alt).toBe(fakeItem.title);
+    const { container } = render(
+      <MockedProvider>
+        <ItemComponent item={item} />
+      </MockedProvider>
+    );
+    expect(container).toMatchSnapshot();
   });
 
-  it('renders the price tag and title properly', () => {
-    const wrapper = shallow(<ItemComponent item={fakeItem} />);
-    const PriceTag = wrapper.find('PriceTag');
+  it.skip('renders the image properly', () => {
+    render(
+      <MockedProvider>
+        <ItemComponent item={item} />
+      </MockedProvider>
+    );
+    const img = screen.getByAltText(item.name);
+    expect(img).toBeInTheDocument();
+  });
 
-    expect(PriceTag.children().text()).toBe('$50');
-    expect(wrapper.find('Title a').text()).toBe(fakeItem.title);
+  it.skip('renders the pricetag and title', () => {
+    const { container } = render(
+      <MockedProvider>
+        <ItemComponent item={item} />
+      </MockedProvider>
+    );
+    expect(screen.getByText('$50')).toBeInTheDocument();
+    const link = container.querySelector('a');
+    expect(link).toHaveAttribute('href', '/item?id=abc123');
+    expect(link).toHaveTextContent(item.name);
   });
 
   it('renders out the buttons properly', () => {
-    const wrapper = shallow(<ItemComponent item={fakeItem} />);
-    const buttonsList = wrapper.find('.buttonList');
-    expect(buttonsList.children()).toHaveLength(3);
-    expect(buttonsList.find('Link')).toHaveLength(1);
-    expect(buttonsList.find('AddToCart').exists()).toBe(true);
-    expect(buttonsList.find('DeleteItem').exists()).toBe(true);
-  }); */
+    render(
+      <MockedProvider>
+        <ItemComponent item={item} />
+      </MockedProvider>
+    );
+
+    const edit = screen.getByText(/Edit/i);
+    expect(edit.href).toContain('update?id=abc123');
+
+    const addToCart = screen.getByText(/add to cart/i);
+    expect(addToCart).toHaveProperty('type', 'button');
+    expect(addToCart).toBeInTheDocument();
+
+    const deleteItem = screen.getByText(/delete/i);
+    expect(deleteItem).toHaveProperty('type', 'button');
+    expect(deleteItem).toBeInTheDocument();
+  });
 });

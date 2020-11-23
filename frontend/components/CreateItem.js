@@ -51,7 +51,7 @@ function CreateItem() {
       'https://api.cloudinary.com/v1_1/literat/image/upload',
       { method: 'POST', body: data }
     );
-    const file = await response.json();
+    await response.json();
     // this.setState({
     // image: file.secure_url,
     // largeImage: file.eager[0].secure_url,

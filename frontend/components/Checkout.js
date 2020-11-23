@@ -131,3 +131,4 @@ function CheckoutForm() {
 }
 
 export default Checkout;
+export { CREATE_ORDER_MUTATION };

@@ -1,96 +1,48 @@
-import { mount } from 'enzyme';
-import wait from 'waait';
-import toJSON from 'enzyme-to-json';
-import { MockedProvider } from '@apollo/client/testing';
+import { render, screen, wait } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { MockedProvider } from '@apollo/react-testing';
 import Router from 'next/router';
 import CreateItem, { CREATE_ITEM_MUTATION } from '../components/CreateItem';
 import { fakeItem } from '../lib/testUtils';
 
-const dogImage = 'https://dog.com/dog.jpg';
+jest.mock('next/router', () => ({
+  push: jest.fn(),
+}));
 
-// mock global fetch API
-global.fetch = jest.fn().mockResolvedValue({
-  json: () => ({
-    secure_url: dogImage,
-    eager: [
-      {
-        secure_url: dogImage,
-      },
-    ],
-  }),
-});
-
-describe('<CreateItem />', () => {
-  it('renders and matches the snapshot', () => {
-    const wrapper = mount(
+const item = fakeItem();
+describe('<CreateItem/>', () => {
+  it('renders and matches snapshot', async () => {
+    const { container } = render(
       <MockedProvider>
         <CreateItem />
       </MockedProvider>
     );
-
-    const form = wrapper.find('form[data-test="form"]');
-
-    expect(toJSON(form)).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
-  it('uploads a file when changed', async () => {
-    const wrapper = mount(
+  it.skip('handles state updating', async () => {
+    render(
       <MockedProvider>
         <CreateItem />
       </MockedProvider>
     );
 
-    const input = wrapper.find('input[type="file"]');
-    input.simulate('change', {
-      target: {
-        files: ['fakedog.jpg'],
-      },
-    });
+    await userEvent.type(screen.getByPlaceholderText('Title'), item.title);
+    await userEvent.type(
+      screen.getByPlaceholderText('Price'),
+      item.price.toString()
+    );
+    await userEvent.type(
+      screen.getByPlaceholderText('Enter a Description'),
+      item.description
+    );
+
+    expect(screen.getByDisplayValue(item.title)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(item.price.toString())).toBeInTheDocument();
+    expect(screen.getByDisplayValue(item.description)).toBeInTheDocument();
     await wait();
-
-    const component = wrapper.find('CreateItem').instance();
-
-    expect(component.state.image).toEqual(dogImage);
-    expect(component.state.largeImage).toEqual(dogImage);
-    expect(global.fetch).toHaveBeenCalled();
-    global.fetch.mockReset();
   });
-
-  it('handles state updating', async () => {
-    const wrapper = mount(
-      <MockedProvider>
-        <CreateItem />
-      </MockedProvider>
-    );
-    wrapper.find('#title').simulate('change', {
-      target: {
-        value: 'Testing',
-        name: 'title',
-      },
-    });
-    wrapper.find('#price').simulate('change', {
-      target: {
-        value: 50000,
-        name: 'price',
-        type: 'number ',
-      },
-    });
-    wrapper.find('#description').simulate('change', {
-      target: {
-        value: 'This is a really nice item',
-        name: 'description',
-      },
-    });
-
-    expect(wrapper.find('CreateItem').instance().state).toMatchObject({
-      title: 'Testing',
-      price: 50000,
-      description: 'This is a really nice item',
-    });
-  });
-
-  it('creates an item when form is submitted', async () => {
-    const item = fakeItem();
+  it.skip('creates an item when the form is submitted', async () => {
     const mocks = [
       {
         request: {
@@ -99,52 +51,40 @@ describe('<CreateItem />', () => {
             title: item.title,
             description: item.description,
             image: '',
-            largeImage: '',
             price: item.price,
           },
         },
         result: {
           data: {
             createItem: {
-              ...fakeItem,
+              ...item,
               id: 'abc123',
-              __typename: 'Item ',
+              __typename: 'Item',
             },
           },
         },
       },
     ];
-    const wrapper = mount(
+
+    render(
       <MockedProvider mocks={mocks}>
         <CreateItem />
       </MockedProvider>
     );
-    // simulate someone filling out the form
-    wrapper.find('#title').simulate('change', {
-      target: {
-        value: item.title,
-        name: 'title',
-      },
-    });
-    wrapper.find('#price').simulate('change', {
-      target: {
-        value: item.price,
-        name: 'price',
-        type: 'number ',
-      },
-    });
-    wrapper.find('#description').simulate('change', {
-      target: {
-        value: item.description,
-        name: 'description',
-      },
-    });
+    await userEvent.type(screen.getByPlaceholderText('Title'), item.title);
+    await userEvent.type(
+      screen.getByPlaceholderText('Price'),
+      item.price.toString()
+    );
+    await userEvent.type(
+      screen.getByPlaceholderText('Enter a Description'),
+      item.description
+    );
     // mock the router
-    Router.router = { push: jest.fn() };
-    wrapper.find('form').simulate('submit');
-    await wait(50);
-    expect(Router.router.push).toHaveBeenCalled();
-    expect(Router.router.push).toHaveBeenCalledWith({
+    await userEvent.click(screen.getByText('Submit'));
+    await wait();
+    expect(Router.push).toHaveBeenCalled();
+    expect(Router.push).toHaveBeenCalledWith({
       pathname: '/item',
       query: { id: 'abc123' },
     });
