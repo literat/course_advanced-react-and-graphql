@@ -25,7 +25,7 @@ jobs:
         run: npx install-peerdeps --dev eslint-config-wesbos
 
       - name: Install Frontend Dependencies
-        run: cd frontend && npm ci
+        run: cd frontend && yarn install --frozen-lockfile --prefer-offline
 
       - name: Install Backend Dependencies
         run: cd backend && npm ci
