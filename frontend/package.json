@@ -24,6 +24,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-styled-components": "^1.7.1",
     "bcryptjs": "^2.4.3",
+    "cookie": "^0.4.1",
     "crypto": "^1.0.1",
     "date-fns": "^2.0.0-alpha.7",
     "dotenv": "^8.2.0",

@@ -74,17 +74,17 @@ export const Query = {
       info
     );
   },
-  // async users(parent, args, context, info) {
-  //   // 1. Check if they are logged in
-  //   if (!context.request.userId) {
-  //     throw new Error('You must be logged in!');
-  //   }
-  //   // 2. Check if the user has permissions to query all users
-  //   hasPermission(context.request.user, ['ADMIN', 'PERMISSIONUPDATE']);
+  async users(parent, args, context, info) {
+    // 1. Check if they are logged in
+    if (!context.req.userId) {
+      throw new Error('You must be logged in!');
+    }
+    // 2. Check if the user has permissions to query all users
+    hasPermission(context.req.user, ['ADMIN', 'PERMISSIONUPDATE']);
 
-  //   // 3. if they do, query all the users
-  //   return context.db.users({}, info);
-  // },
+    // 3. if they do, query all the users
+    return context.db.user.findMany({}, info);
+  },
   // async order(parent, args, context, info) {
   //   // 1. Make sure they are logged in
   //   if (!context.request.userId) {

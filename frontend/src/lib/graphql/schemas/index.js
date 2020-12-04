@@ -12,19 +12,23 @@ export const typeDefs = gql`
 
   scalar DateTime
 
-  type User {
-    id: ID!
-    name: String!
-    email: String!
-    permissions: [Permission!]!
-    cart: [CartItem!]!
-    orders: [OrderItem]
-  }
-
   # An object with an ID
   interface Node {
     # The id of the object.
     id: ID!
+  }
+
+  type User implements Node {
+    id: ID!
+    name: String!
+    email: String!
+    permissions: [Permission!]!
+    resetToken: String
+    resetTokenExpiry: Float
+    # cart: [CartItem!]!
+    # orders: [OrderItem]
+    createdAt: DateTime!
+    updatedAt: DateTime!
   }
 
   type Item implements Node {
@@ -112,6 +116,36 @@ export const typeDefs = gql`
     createdAt_DESC
     updatedAt_ASC
     updatedAt_DESC
+  }
+
+  input StringFilter {
+    equals: String
+    not: StringFilter
+    in: String
+    notIn: String
+    lt: String
+    lte: String
+    gt: String
+    gte: String
+    contains: String
+    startsWith: String
+    endsWith: String
+    mode: String
+  }
+
+  input FloatFilter {
+    equals: Float
+    not: FloatFilter
+    in: Float
+    notIn: Float
+    lt: Float
+    lte: Float
+    gt: Float
+    gte: Float
+    contains: Float
+    startsWith: Float
+    endsWith: Float
+    mode: Float
   }
 
   input UserWhereInput {
@@ -293,7 +327,7 @@ export const typeDefs = gql`
     password_not_ends_with: String
 
     #
-    resetToken: String
+    resetToken: StringFilter
 
     # All values that are not equal to given value.
     resetToken_not: String
@@ -335,7 +369,7 @@ export const typeDefs = gql`
     resetToken_not_ends_with: String
 
     #
-    resetTokenExpiry: Float
+    resetTokenExpiry: FloatFilter
 
     # All values that are not equal to given value.
     resetTokenExpiry_not: Float
@@ -704,6 +738,36 @@ export const typeDefs = gql`
     user: UserWhereInput
   }
 
+  type SuccesMessage {
+    message: String
+  }
+
+  type Mutation {
+    # createItem(
+    #   title: String
+    #   description: String
+    #   price: Int
+    #   image: String
+    #   largeImage: String
+    # ): Item!
+    # updateItem(id: ID!, title: String, description: String, price: Int): Item!
+    # deleteItem(id: ID!): Item
+    signup(email: String!, password: String!, name: String!): User!
+    signin(email: String!, password: String!): User!
+    signout: SuccesMessage!
+    requestReset(email: String!): SuccesMessage
+    resetPassword(
+      resetToken: String!
+      password: String!
+      confirmPassword: String!
+    ): SuccesMessage!
+    # updateUser(id: String!, name: String!): User!
+    # updatePermissions(permissions: [Permission], userId: ID!): User
+    # addToCart(id: ID!): CartItem
+    # removeFromCart(id: ID!): CartItem
+    # createOrder(token: String!): Order!
+  }
+
   type Query {
     items(
       where: ItemWhereInput
@@ -714,7 +778,7 @@ export const typeDefs = gql`
     #item(where: ItemWhereUniqueInput!): Item
     itemsConnection(where: ItemWhereInput): ItemConnection
     me: User
-    #users: [User]!
+    users: [User]!
     #order(id: ID!): Order
     #orders(orderBy: OrderOrderByInput): [Order]!
   }

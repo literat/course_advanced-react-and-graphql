@@ -6,6 +6,7 @@ import { typeDefs } from '../../lib/graphql/schemas/index';
 import db from '../../lib/db';
 import useUserId from '../../lib/middleware/useUserId';
 import useUser from '../../lib/middleware/useUser';
+import useCookie from '../../lib/middleware/useCookie';
 
 dotenv.config({ path: '.env.local' });
 
@@ -29,6 +30,7 @@ export const config = {
 
 const handler = nextConnect();
 
+handler.use(useCookie());
 handler.use(useUserId());
 handler.use(useUser());
 handler.use(useApollo);

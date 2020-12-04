@@ -4,12 +4,9 @@ import jwt from 'jsonwebtoken';
 const userIdMiddleware = () => (request, response, next) => {
   const { token } = request.cookies;
 
-  console.log(token);
-
   if (token) {
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     // put the userId onto request for future requests to access
-    console.log({ userId });
     request.userId = userId;
   }
 
